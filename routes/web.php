@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\DoctorController;
 
 Route::middleware('guest')->group(function () {
     Route::get('/', fn () => redirect()->route('login'));
@@ -27,6 +28,20 @@ Route::middleware('auth')->group(function () {
         Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
         Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
     });
+
+    Route::middleware('role:super_admin|receptionist')->group(function () {
+        Route::get('/doctors', [DoctorController::class, 'index'])->name('doctors.index');
+    });
+
+
+    Route::middleware('role:receptionist')->group(function () {
+        Route::get('/doctors/export', [DoctorController::class, 'export'])->name('doctors.export');
+        Route::post('/doctors', [DoctorController::class, 'store'])->name('doctors.store');
+        Route::put('/doctors/{id}', [DoctorController::class, 'update'])->name('doctors.update');
+        Route::delete('/doctors/{id}', [DoctorController::class, 'destroy'])->name('doctors.destroy');
+        Route::post('/doctors/import', [DoctorController::class, 'import'])->name('doctors.import');
+    });
+
 });
 
 Route::fallback(fn () => redirect()->route('login'));

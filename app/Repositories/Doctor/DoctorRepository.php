@@ -11,9 +11,8 @@ class DoctorRepository implements DoctorRepositoryInterface
         $offset = ($page - 1) * $perPage;
 
         return DB::select(
-            'SELECT d.id, d.name, d.specialization, d.license_no, d.user_id, d.created_at, u.name as linked_user_name
+            'SELECT d.id, d.name, d.specialization, d.license_no, d.created_at
              FROM doctors d
-             LEFT JOIN users u ON u.id = d.user_id
              ORDER BY d.created_at DESC
              LIMIT ? OFFSET ?',
             [$perPage, $offset]
@@ -28,9 +27,8 @@ class DoctorRepository implements DoctorRepositoryInterface
     public function find(int $id): ?object
     {
         return DB::selectOne(
-            'SELECT d.id, d.name, d.specialization, d.license_no, d.user_id, d.created_at, u.name as linked_user_name
+            'SELECT d.id, d.name, d.specialization, d.license_no, d.created_at
              FROM doctors d
-             LEFT JOIN users u ON u.id = d.user_id
              WHERE d.id = ?',
             [$id]
         );
@@ -39,8 +37,8 @@ class DoctorRepository implements DoctorRepositoryInterface
     public function create(array $data): int
     {
         DB::insert(
-            'INSERT INTO doctors (name, specialization, license_no, user_id, created_at, updated_at) VALUES (?, ?, ?, ?, NOW(), NOW())',
-            [$data['name'], $data['specialization'], $data['license_no'], $data['user_id'] ?? null]
+            'INSERT INTO doctors (name, specialization, license_no, created_at, updated_at) VALUES (?, ?, ?, NOW(), NOW())',
+            [$data['name'], $data['specialization'], $data['license_no']]
         );
 
         return (int) DB::getPdo()->lastInsertId();
@@ -49,8 +47,8 @@ class DoctorRepository implements DoctorRepositoryInterface
     public function update(int $id, array $data): bool
     {
         return (bool) DB::update(
-            'UPDATE doctors SET name = ?, specialization = ?, license_no = ?, user_id = ?, updated_at = NOW() WHERE id = ?',
-            [$data['name'], $data['specialization'], $data['license_no'], $data['user_id'] ?? null, $id]
+            'UPDATE doctors SET name = ?, specialization = ?, license_no = ?, updated_at = NOW() WHERE id = ?',
+            [$data['name'], $data['specialization'], $data['license_no'], $id]
         );
     }
 
