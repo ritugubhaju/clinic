@@ -21,14 +21,12 @@ const createForm = useForm({
     name: '',
     specialization: '',
     license_no: '',
-    user_id: '',
 });
 
 const editForm = useForm({
     name: '',
     specialization: '',
     license_no: '',
-    user_id: '',
 });
 
 const importForm = useForm({
@@ -40,7 +38,6 @@ function openEdit(doctor) {
     editForm.name = doctor.name;
     editForm.specialization = doctor.specialization;
     editForm.license_no = doctor.license_no;
-    editForm.user_id = doctor.user_id ?? '';
     showEdit.value = true;
 }
 
@@ -131,14 +128,13 @@ function changePage(page) {
             </div>
 
             <div class="overflow-x-auto">
-                <table class="w-full text-sm">
+                <table class="w-full text-sm table-fixed">
                     <thead>
                         <tr class="bg-gray-50 border-b border-gray-100">
                             <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Name</th>
                             <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Specialization</th>
-                            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">License No.</th>
-                            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Linked User</th>
-                            <th class="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">Actions</th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider w-44">License No.</th>
+                            <th class="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider w-56">Actions</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-50">
@@ -146,10 +142,9 @@ function changePage(page) {
                             <td colspan="5" class="px-6 py-10 text-center text-gray-400 text-sm">No doctors found.</td>
                         </tr>
                         <tr v-for="doctor in doctors.data" :key="doctor.id" class="hover:bg-gray-50 transition-colors">
-                            <td class="px-6 py-3.5 font-medium text-gray-800">{{ doctor.name }}</td>
-                            <td class="px-6 py-3.5 text-gray-600">{{ doctor.specialization }}</td>
-                            <td class="px-6 py-3.5 text-gray-600 font-mono text-xs">{{ doctor.license_no }}</td>
-                            <td class="px-6 py-3.5 text-gray-500">{{ doctor.linked_user_name ?? '—' }}</td>
+                            <td class="px-6 py-3.5 font-medium text-gray-800 truncate">{{ doctor.name }}</td>
+                            <td class="px-6 py-3.5 text-gray-600 truncate">{{ doctor.specialization }}</td>
+                            <td class="px-6 py-3.5 text-gray-600 font-mono text-xs truncate">{{ doctor.license_no }}</td>
                             <td class="px-6 py-3.5 text-right">
                                 <div class="flex items-center justify-end gap-2">
                                     <Link
@@ -201,11 +196,6 @@ function changePage(page) {
                     <input v-model="createForm.license_no" type="text" required class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
                     <InputError :message="createForm.errors.license_no" />
                 </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Linked user ID <span class="text-gray-400 font-normal">(optional)</span></label>
-                    <input v-model="createForm.user_id" type="number" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="User ID to link" />
-                    <InputError :message="createForm.errors.user_id" />
-                </div>
                 <div class="flex justify-end gap-3 pt-2">
                     <button type="button" @click="showCreate = false" class="px-4 py-2 text-sm text-gray-600 border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors">Cancel</button>
                     <button type="submit" :disabled="createForm.processing" class="px-4 py-2 text-sm font-medium bg-blue-600 hover:bg-blue-700 text-white rounded-xl disabled:opacity-60 transition-colors">
@@ -231,11 +221,6 @@ function changePage(page) {
                     <label class="block text-sm font-medium text-gray-700 mb-1">License number</label>
                     <input v-model="editForm.license_no" type="text" required class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
                     <InputError :message="editForm.errors.license_no" />
-                </div>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Linked user ID <span class="text-gray-400 font-normal">(optional)</span></label>
-                    <input v-model="editForm.user_id" type="number" class="w-full px-3.5 py-2.5 rounded-xl border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" placeholder="User ID to link" />
-                    <InputError :message="editForm.errors.user_id" />
                 </div>
                 <div class="flex justify-end gap-3 pt-2">
                     <button type="button" @click="showEdit = false" class="px-4 py-2 text-sm text-gray-600 border border-gray-300 rounded-xl hover:bg-gray-50 transition-colors">Cancel</button>
