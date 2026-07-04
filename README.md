@@ -25,12 +25,5 @@ php artisan migrate
 php artisan db:seed
 
 npm run dev
-```
-
-Open `http://localhost/clinic-management/public` in your browser.
-
-Default super admin:
-- **Email:** admin@clinic.com
-- **Password:** password
 
 ---
